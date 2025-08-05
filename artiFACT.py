@@ -359,7 +359,14 @@ class ClassifierApp:
 
         # Main content frame inside canvas
         main_frame = RetroFrame(self.main_canvas)
-        self.main_canvas.create_window((0, 0), window=main_frame, anchor='nw')
+        # Create window with proper width (accounting for scrollbar)
+        initial_width = max(800, self.master.winfo_width() - 50)
+        self.main_canvas.create_window((0, 0), window=main_frame, anchor='nw', width=initial_width)
+        
+        # Bind mouse wheel scrolling
+        self.main_canvas.bind('<MouseWheel>', self.on_mousewheel)
+        self.main_canvas.bind('<Button-4>', self.on_mousewheel)
+        self.main_canvas.bind('<Button-5>', self.on_mousewheel)
 
         # Image display section
         image_frame = RetroFrame(main_frame)
@@ -424,7 +431,24 @@ class ClassifierApp:
         # Bind main frame resize to update scroll region
         main_frame.bind('<Configure>', 
             lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all")))
+        
+        # Update canvas window width when main window resizes
+        self.master.bind('<Configure>', self.on_window_resize)
 
+    def on_mousewheel(self, event):
+        """Handle mouse wheel scrolling"""
+        if event.num == 4 or event.delta > 0:
+            self.main_canvas.yview_scroll(-1, "units")
+        elif event.num == 5 or event.delta < 0:
+            self.main_canvas.yview_scroll(1, "units")
+    
+    def on_window_resize(self, event):
+        """Update canvas window width when main window resizes"""
+        if hasattr(self, 'main_canvas') and event.widget == self.master:
+            # Update the canvas window to match the new window width
+            canvas_width = event.width - 50  # Account for scrollbar width
+            self.main_canvas.itemconfig(1, width=canvas_width)  # Update the first (and only) window item
+    
     def select_image(self):
         file_path = filedialog.askopenfilename(
             filetypes=[("Image files", "*.jpg *.jpeg *.png")])
