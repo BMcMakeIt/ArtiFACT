@@ -11,18 +11,20 @@ from tensorflow.keras.preprocessing import image
 from keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 
-# Retro color palette
+# Retro color palette - Vintage Computer Green Theme
 RETRO_COLORS = {
-    'bg_primary': '#2C1810',      # Dark brown
-    'bg_secondary': '#8B4513',    # Saddle brown
-    'accent_gold': '#FFD700',     # Gold
-    'accent_orange': '#FF8C00',   # Dark orange
-    'text_light': '#F5F5DC',      # Beige
-    'text_dark': '#2C1810',       # Dark brown
-    'button_bg': '#CD853F',       # Peru
-    'button_hover': '#D2691E',    # Chocolate
-    'success_green': '#228B22',   # Forest green
-    'error_red': '#DC143C'        # Crimson
+    'bg_primary': '#0A0A0A',      # Deep black (like old CRT screens)
+    'bg_secondary': '#1A2F1A',    # Dark green-gray
+    'accent_green': '#00FF00',    # Bright green (classic terminal green)
+    'accent_cyan': '#00FFFF',     # Cyan for highlights
+    'text_light': '#C0C0C0',      # Light gray (like old monitors)
+    'text_dark': '#000000',       # Pure black
+    'button_bg': '#2F4F2F',       # Dark green
+    'button_hover': '#4F6F4F',    # Lighter green on hover
+    'success_green': '#00FF00',   # Bright green for success
+    'error_red': '#FF0000',       # Bright red for errors
+    'selection_green': '#00FF00', # Bright green for selections
+    'border_green': '#00FF00'     # Green borders
 }
 
 # Paths
@@ -90,14 +92,16 @@ class RetroButton(tk.Button):
         super().__init__(master, **kwargs)
         self.configure(
             bg=RETRO_COLORS['button_bg'],
-            fg=RETRO_COLORS['text_dark'],
+            fg=RETRO_COLORS['accent_green'],
             font=('Courier', 10, 'bold'),
             relief='raised',
             bd=3,
             padx=15,
             pady=8,
             activebackground=RETRO_COLORS['button_hover'],
-            activeforeground=RETRO_COLORS['text_light']
+            activeforeground=RETRO_COLORS['accent_green'],
+            highlightbackground=RETRO_COLORS['border_green'],
+            highlightthickness=2
         )
         self.bind('<Enter>', self.on_enter)
         self.bind('<Leave>', self.on_leave)
@@ -117,7 +121,7 @@ class RetroFrame(tk.Frame):
             bg=RETRO_COLORS['bg_secondary'],
             relief='ridge',
             bd=4,
-            highlightbackground=RETRO_COLORS['accent_gold'],
+            highlightbackground=RETRO_COLORS['border_green'],
             highlightthickness=2
         )
 
@@ -128,10 +132,12 @@ class RetroLabel(tk.Label):
         super().__init__(master, **kwargs)
         self.configure(
             bg=RETRO_COLORS['bg_secondary'],
-            fg=RETRO_COLORS['text_light'],
+            fg=RETRO_COLORS['accent_green'],
             font=('Courier', 11, 'bold'),
             relief='sunken',
-            bd=2
+            bd=2,
+            highlightbackground=RETRO_COLORS['border_green'],
+            highlightthickness=1
         )
 
 
@@ -140,14 +146,16 @@ class RetroText(tk.Text):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.configure(
-            bg=RETRO_COLORS['text_light'],
-            fg=RETRO_COLORS['text_dark'],
+            bg=RETRO_COLORS['text_dark'],
+            fg=RETRO_COLORS['accent_green'],
             font=('Courier', 10),
             relief='sunken',
             bd=3,
-            selectbackground=RETRO_COLORS['accent_gold'],
+            selectbackground=RETRO_COLORS['selection_green'],
             selectforeground=RETRO_COLORS['text_dark'],
-            insertbackground=RETRO_COLORS['text_dark']
+            insertbackground=RETRO_COLORS['accent_green'],
+            highlightbackground=RETRO_COLORS['border_green'],
+            highlightthickness=2
         )
 
 
@@ -156,14 +164,14 @@ class RetroListbox(tk.Listbox):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.configure(
-            bg=RETRO_COLORS['text_light'],
-            fg=RETRO_COLORS['text_dark'],
+            bg=RETRO_COLORS['text_dark'],
+            fg=RETRO_COLORS['accent_green'],
             font=('Courier', 10),
             relief='sunken',
             bd=3,
-            selectbackground=RETRO_COLORS['accent_gold'],
+            selectbackground=RETRO_COLORS['selection_green'],
             selectforeground=RETRO_COLORS['text_dark'],
-            highlightbackground=RETRO_COLORS['accent_gold'],
+            highlightbackground=RETRO_COLORS['border_green'],
             highlightthickness=2
         )
 
@@ -173,10 +181,10 @@ class RetroCanvas(tk.Canvas):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
         self.configure(
-            bg=RETRO_COLORS['text_light'],
+            bg=RETRO_COLORS['text_dark'],
             relief='sunken',
             bd=3,
-            highlightbackground=RETRO_COLORS['accent_gold'],
+            highlightbackground=RETRO_COLORS['border_green'],
             highlightthickness=2
         )
 
@@ -378,10 +386,10 @@ class ClassifierApp:
         self.top3_var = tk.BooleanVar()
         self.top3_check = tk.Checkbutton(
             options_frame, text="Show Top 3 Predictions", variable=self.top3_var,
-            bg=RETRO_COLORS['bg_secondary'], fg=RETRO_COLORS['text_light'],
-            font=('Courier', 10, 'bold'), selectcolor=RETRO_COLORS['accent_gold'],
+            bg=RETRO_COLORS['bg_secondary'], fg=RETRO_COLORS['accent_green'],
+            font=('Courier', 10, 'bold'), selectcolor=RETRO_COLORS['selection_green'],
             activebackground=RETRO_COLORS['bg_secondary'],
-            activeforeground=RETRO_COLORS['text_light']
+            activeforeground=RETRO_COLORS['accent_green']
         )
         self.top3_check.pack(pady=10)
 
