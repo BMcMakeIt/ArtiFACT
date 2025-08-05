@@ -327,18 +327,6 @@ class ClassifierApp:
         # Set window icon and styling
         self.master.geometry("900x700")
         
-        # Main title with retro styling
-        title_frame = RetroFrame(self.master)
-        title_frame.pack(fill=tk.X, padx=20, pady=20)
-        
-        title_label = RetroLabel(title_frame, text="🎯 RETRO ITEM CLASSIFIER 🎯", 
-                               font=('Courier', 18, 'bold'))
-        title_label.pack(pady=15)
-        
-        subtitle_label = RetroLabel(title_frame, text="Discover the secrets of your artifacts!", 
-                                  font=('Courier', 12))
-        subtitle_label.pack(pady=(0, 15))
-
         # Create a canvas for the main window with scrollbars
         self.main_canvas = RetroCanvas(self.master)
         self.main_canvas.pack(side='left', fill='both', expand=True)
@@ -362,6 +350,18 @@ class ClassifierApp:
         # Create window with proper width (accounting for scrollbar)
         initial_width = max(800, self.master.winfo_width() - 50)
         self.main_canvas.create_window((0, 0), window=main_frame, anchor='nw', width=initial_width)
+        
+        # Main title with retro styling (now inside the canvas)
+        title_frame = RetroFrame(main_frame)
+        title_frame.pack(fill=tk.X, padx=20, pady=20)
+        
+        title_label = RetroLabel(title_frame, text="🎯 RETRO ITEM CLASSIFIER 🎯", 
+                               font=('Courier', 18, 'bold'))
+        title_label.pack(pady=15)
+        
+        subtitle_label = RetroLabel(title_frame, text="Discover the secrets of your artifacts!", 
+                                  font=('Courier', 12))
+        subtitle_label.pack(pady=(0, 15))
         
         # Bind mouse wheel scrolling
         self.main_canvas.bind('<MouseWheel>', self.on_mousewheel)
@@ -409,12 +409,20 @@ class ClassifierApp:
         options_label.pack(pady=(5, 0))
 
         self.top3_var = tk.BooleanVar()
+        # Create a custom retro checkbox with better visual indication
+        checkbox_frame = tk.Frame(options_frame, bg=RETRO_COLORS['bg_secondary'])
+        checkbox_frame.pack(pady=10)
+        
         self.top3_check = tk.Checkbutton(
-            options_frame, text="Show Top 3 Predictions", variable=self.top3_var,
+            checkbox_frame, text="Show Top 3 Predictions", variable=self.top3_var,
             bg=RETRO_COLORS['bg_secondary'], fg=RETRO_COLORS['accent_green'],
             font=('Courier', 10, 'bold'), selectcolor=RETRO_COLORS['selection_green'],
             activebackground=RETRO_COLORS['bg_secondary'],
-            activeforeground=RETRO_COLORS['accent_green']
+            activeforeground=RETRO_COLORS['accent_green'],
+            indicatoron=True,  # Show the checkbox indicator
+            offrelief='raised',  # Raised when unchecked
+            onrelief='sunken',   # Sunken when checked
+            overrelief='groove'  # Groove on hover
         )
         self.top3_check.pack(pady=10)
 
