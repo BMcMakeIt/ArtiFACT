@@ -350,9 +350,35 @@ class ClassifierApp:
         image_label = RetroLabel(image_frame, text="🖼️ SELECTED IMAGE")
         image_label.pack(pady=(5, 0))
 
-        self.image_label = RetroLabel(image_frame, text="No image selected", 
+        # Create a canvas for the image with scrollbars
+        self.image_canvas = RetroCanvas(image_frame, height=350)
+        self.image_canvas.pack(side='top', fill='x', expand=True, padx=5, pady=5)
+
+        # Add scrollbars
+        self.image_scroll_x = tk.Scrollbar(
+            image_frame, orient='horizontal', command=self.image_canvas.xview)
+        self.image_scroll_x.pack(side='bottom', fill='x')
+
+        self.image_scroll_y = tk.Scrollbar(
+            image_frame, orient='vertical', command=self.image_canvas.yview)
+        self.image_scroll_y.pack(side='right', fill='y')
+
+        self.image_canvas.configure(
+            xscrollcommand=self.image_scroll_x.set,
+            yscrollcommand=self.image_scroll_y.set
+        )
+
+        # Create a frame inside the canvas for the image
+        self.image_frame_inner = tk.Frame(self.image_canvas, bg=RETRO_COLORS['text_dark'])
+        self.image_canvas.create_window((0, 0), window=self.image_frame_inner, anchor='nw')
+
+        self.image_label = RetroLabel(self.image_frame_inner, text="No image selected", 
                                     font=('Courier', 12))
         self.image_label.pack(pady=10)
+
+        # Bind canvas resize
+        self.image_frame_inner.bind('<Configure>', 
+            lambda e: self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all")))
 
         # Button section with retro styling
         btn_frame = RetroFrame(main_frame)
@@ -437,10 +463,13 @@ class ClassifierApp:
 
     def process_image(self, file_path):
         try:
-            img = Image.open(file_path).resize((400, 400))
+            img = Image.open(file_path).resize((320, 320))  # Reduced by 20% from 400x400
             tk_img = ImageTk.PhotoImage(img)
             self.image_label.config(image=tk_img, text="")
             self.image_label.image = tk_img
+            
+            # Update canvas scroll region
+            self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
 
             results = predict_with_description(
                 file_path, top_k=3 if self.top3_var.get() else 1)
@@ -451,10 +480,13 @@ class ClassifierApp:
     def process_frame(self, frame):
         try:
             img = Image.fromarray(cv2.cvtColor(
-                frame, cv2.COLOR_BGR2RGB)).resize((400, 400))
+                frame, cv2.COLOR_BGR2RGB)).resize((320, 320))  # Reduced by 20% from 400x400
             tk_img = ImageTk.PhotoImage(img)
             self.image_label.config(image=tk_img, text="")
             self.image_label.image = tk_img
+            
+            # Update canvas scroll region
+            self.image_canvas.configure(scrollregion=self.image_canvas.bbox("all"))
 
             results = predict_with_description(
                 frame, top_k=3 if self.top3_var.get() else 1)
