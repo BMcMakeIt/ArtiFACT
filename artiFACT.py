@@ -420,9 +420,8 @@ class ClassifierApp:
             activebackground=RETRO_COLORS['bg_secondary'],
             activeforeground=RETRO_COLORS['accent_green'],
             indicatoron=True,  # Show the checkbox indicator
-            offrelief='raised',  # Raised when unchecked
-            onrelief='sunken',   # Sunken when checked
-            overrelief='groove'  # Groove on hover
+            relief='raised',    # Raised appearance
+            bd=2               # Border width for better visibility
         )
         self.top3_check.pack(pady=10)
 
