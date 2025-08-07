@@ -200,7 +200,7 @@ class ParchmentCanvas(tk.Canvas):
 class LibraryWindow(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
-        self.title("📚 Artifact Catalog")
+        self.title("🐚🪲 artiFACTS 🦂🦴")
         self.configure(bg=PARCHMENT_COLORS['bg_primary'])
 
         # Set to fullscreen - cross-platform compatible
@@ -216,7 +216,7 @@ class LibraryWindow(tk.Toplevel):
                 self.attributes('-fullscreen', True)
 
         # Add academic title
-        title_label = ParchmentLabel(self, text="📚 Artifact Catalog & Research Database",
+        title_label = ParchmentLabel(self, text="🐚🪲 artiFACTS 🦂🦴",
                                      font=('Georgia', 24, 'bold'))
         title_label.pack(pady=20)
 
@@ -227,7 +227,7 @@ class LibraryWindow(tk.Toplevel):
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
 
         # Add academic label for listbox
-        list_label = ParchmentLabel(self.left_frame, text="📖 Collection Index",
+        list_label = ParchmentLabel(self.left_frame, text="📖 ITEM CATALOG",
                                     font=('Georgia', 14, 'bold'))
         list_label.pack(pady=(10, 5))
 
@@ -240,7 +240,7 @@ class LibraryWindow(tk.Toplevel):
                               expand=True, padx=10, pady=10)
 
         # Image section with academic styling
-        image_label = ParchmentLabel(self.right_frame, text="🖼️ Artifact Documentation",
+        image_label = ParchmentLabel(self.right_frame, text="🖼️ ITEM PHOTOS",
                                      font=('Georgia', 14, 'bold'))
         image_label.pack(pady=(10, 5))
 
@@ -261,7 +261,7 @@ class LibraryWindow(tk.Toplevel):
         self.image_canvas.bind("<B1-Motion>", self.do_scroll)
 
         # Info section with academic styling
-        info_label = ParchmentLabel(self.right_frame, text="📋 Artifact Details & Analysis",
+        info_label = ParchmentLabel(self.right_frame, text="📋 ITEM DETAILS",
                                      font=('Georgia', 14, 'bold'))
         info_label.pack(pady=(15, 5))
 
@@ -310,9 +310,9 @@ class LibraryWindow(tk.Toplevel):
                     continue  # skip photo path listing
                 if val:
                     label = col_names[i].replace("_", " ").capitalize()
-                    self.info_text.insert(tk.END, f"🔍 {label}: {val}\n\n")
+                    self.info_text.insert(tk.END, f"🎯 {label}: {val}\n\n")
         else:
-            self.info_text.insert(tk.END, "❌ Artifact not found in database.")
+            self.info_text.insert(tk.END, "❌ Item not found.")
         self.info_text.config(state='disabled')
 
         photo_folder = os.path.join(PHOTO_DIR, item_name.replace(" ", "_"))
@@ -343,7 +343,7 @@ class LibraryWindow(tk.Toplevel):
 class ClassifierApp:
     def __init__(self, master):
         self.master = master
-        self.master.title("📚 Artifact Research & Classification System")
+        self.master.title("🐚🪲 artiFACTS 🦂🦴")
         self.master.configure(bg=PARCHMENT_COLORS['bg_primary'])
 
         # Set window to fullscreen - cross-platform compatible
@@ -387,11 +387,11 @@ class ClassifierApp:
         title_frame = ParchmentFrame(main_frame)
         title_frame.pack(fill=tk.X, padx=30, pady=30)
 
-        title_label = ParchmentLabel(title_frame, text="📚 Artifact Research & Classification System",
+        title_label = ParchmentLabel(title_frame, text="🐚🪲 artiFACTS 🦂🦴",
                                      font=('Georgia', 28, 'bold'))
         title_label.pack(pady=20)
 
-        subtitle_label = ParchmentLabel(title_frame, text="Academic Explorer's Field Journal",
+        subtitle_label = ParchmentLabel(title_frame, text="Your curiosities library!",
                                         font=('Georgia', 16, 'italic'))
         subtitle_label.pack(pady=(0, 20))
 
@@ -400,19 +400,7 @@ class ClassifierApp:
         self.main_canvas.bind('<Button-4>', self.on_mousewheel)
         self.main_canvas.bind('<Button-5>', self.on_mousewheel)
 
-        # Image display section
-        image_frame = ParchmentFrame(main_frame)
-        image_frame.pack(fill=tk.X, padx=20, pady=20)
-
-        image_label = ParchmentLabel(image_frame, text="🖼️ Selected Artifact Image",
-                                     font=('Georgia', 14, 'bold'))
-        image_label.pack(pady=(10, 5))
-
-        self.image_label = ParchmentLabel(image_frame, text="No artifact image selected",
-                                          font=('Georgia', 12))
-        self.image_label.pack(pady=15)
-
-        # Button section with academic styling
+        # Button section with academic styling (moved to second position)
         btn_frame = ParchmentFrame(main_frame)
         btn_frame.pack(fill=tk.X, padx=20, pady=20)
 
@@ -424,22 +412,22 @@ class ClassifierApp:
         button_container.pack(pady=(0, 15))
 
         self.select_button = ParchmentButton(
-            button_container, text="📁 Select Artifact Image", command=self.select_image)
+            button_container, text="📁 Select Image", command=self.select_image)
         self.select_button.grid(row=0, column=0, padx=15, pady=15)
 
         self.capture_button = ParchmentButton(
-            button_container, text="📷 Capture Artifact Image", command=self.capture_image)
+            button_container, text="📷 Capture Image", command=self.capture_image)
         self.capture_button.grid(row=0, column=1, padx=15, pady=15)
 
         self.library_button = ParchmentButton(
-            button_container, text="📚 View Artifact Catalog", command=self.view_library)
+            button_container, text="📚 View Library", command=self.view_library)
         self.library_button.grid(row=0, column=2, padx=15, pady=15)
 
-        # Options section
+        # Options section (moved to third position)
         options_frame = ParchmentFrame(main_frame)
         options_frame.pack(fill=tk.X, padx=20, pady=20)
 
-        options_label = ParchmentLabel(options_frame, text="⚙️ Analysis Options",
+        options_label = ParchmentLabel(options_frame, text="⚙️ OPTIONS",
                                        font=('Georgia', 14, 'bold'))
         options_label.pack(pady=(10, 5))
 
@@ -450,7 +438,7 @@ class ClassifierApp:
         checkbox_frame.pack(pady=15)
 
         self.top3_check = tk.Checkbutton(
-            checkbox_frame, text="Show Top 3 Classifications", variable=self.top3_var,
+            checkbox_frame, text="Show Top 3 Predictions", variable=self.top3_var,
             bg=PARCHMENT_COLORS['bg_secondary'], fg=PARCHMENT_COLORS['text_charcoal'],
             font=('Georgia', 11, 'bold'), selectcolor=PARCHMENT_COLORS['selection_gold'],
             activebackground=PARCHMENT_COLORS['bg_secondary'],
@@ -461,12 +449,24 @@ class ClassifierApp:
         )
         self.top3_check.pack(pady=15)
 
-        # Results section
+        # Image display section (moved to fourth position)
+        image_frame = ParchmentFrame(main_frame)
+        image_frame.pack(fill=tk.X, padx=20, pady=20)
+
+        image_label = ParchmentLabel(image_frame, text="🖼️ SELECTED IMAGE",
+                                     font=('Georgia', 14, 'bold'))
+        image_label.pack(pady=(10, 5))
+
+        self.image_label = ParchmentLabel(image_frame, text="No image selected",
+                                          font=('Georgia', 12))
+        self.image_label.pack(pady=15)
+
+        # Results section (stays in place)
         results_frame = ParchmentFrame(main_frame)
         results_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         results_label = ParchmentLabel(
-            results_frame, text="🔍 Classification Results & Analysis",
+            results_frame, text="🔍 CLASSIFICATION RESULTS",
              font=('Georgia', 14, 'bold'))
         results_label.pack(pady=(10, 5))
 
@@ -561,17 +561,17 @@ class ClassifierApp:
 
         for i, (label, confidence, description, fact) in enumerate(results):
             if i == 0:
-                self.result_text.insert(tk.END, f"🏆 PRIMARY CLASSIFICATION: {label}\n")
+                self.result_text.insert(tk.END, f"🏆 TOP PREDICTION: {label}\n")
             else:
                 self.result_text.insert(
-                    tk.END, f"🥈 ALTERNATIVE CLASSIFICATION {i+1}: {label}\n")
+                    tk.END, f"🥈 PREDICTION {i+1}: {label}\n")
 
             self.result_text.insert(
-                tk.END, f"   🎯 Confidence Level: {confidence:.2%}\n")
+                tk.END, f"   🎯 Confidence: {confidence:.2%}\n")
             self.result_text.insert(
-                tk.END, f"   📜 Artifact Description: {description}\n")
+                tk.END, f"   📜 Description: {description}\n")
             if fact:
-                self.result_text.insert(tk.END, f"   💡 Historical Note: {fact}\n")
+                self.result_text.insert(tk.END, f"   💡 Fun Fact: {fact}\n")
             self.result_text.insert(tk.END, "\n")
 
         self.result_text.config(state='disabled')
