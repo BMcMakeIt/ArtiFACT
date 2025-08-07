@@ -233,23 +233,10 @@ class LibraryWindow(tk.Toplevel):
                 # Fallback to fullscreen
                 self.attributes('-fullscreen', True)
 
-        # Add academic title with woodgrain styling
-        title_container = tk.Frame(self, bg=PARCHMENT_COLORS['bg_secondary'])
-        title_container.pack(fill=tk.X, padx=15, pady=10)
-
-        # Create canvas for woodgrain background
-        title_canvas = tk.Canvas(title_container, height=60, bg=PARCHMENT_COLORS['bg_secondary'], 
-                                 highlightthickness=0, relief='flat')
-        title_canvas.pack(fill=tk.X, pady=5)
-        
-        # Apply woodgrain pattern
-        create_woodgrain_pattern(title_canvas, 800, 60)
-
-        # Create outlined title text
-        title_canvas.create_text(400, 25, text="🐚🪲 artiFACTS 🦂🦴", 
-                                font=('Georgia', 28, 'bold'), fill=PARCHMENT_COLORS['title_outline'])
-        title_canvas.create_text(400, 25, text="🐚🪲 artiFACTS 🦂🦴", 
-                                font=('Georgia', 28, 'bold'), fill=PARCHMENT_COLORS['title_gold'])
+        # Add academic title
+        title_label = ParchmentLabel(self, text="🐚🪲 artiFACTS 🦂🦴",
+                                     font=('Georgia', 24, 'bold'))
+        title_label.pack(pady=20)
 
         main_frame = ParchmentFrame(self)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=10)
@@ -418,30 +405,14 @@ class ClassifierApp:
         title_frame = ParchmentFrame(main_frame)
         title_frame.pack(fill=tk.X, padx=20, pady=15)
 
-        # Create a custom styled title with outline effect
-        title_container = tk.Frame(title_frame, bg=PARCHMENT_COLORS['bg_secondary'])
-        title_container.pack(fill=tk.X, padx=10, pady=10)
+        # Main title with academic styling
+        title_label = ParchmentLabel(title_frame, text="🐚🪲 artiFACTS 🦂🦴",
+                                     font=('Georgia', 28, 'bold'))
+        title_label.pack(pady=20)
 
-        # Create canvas for woodgrain background
-        title_canvas = tk.Canvas(title_container, height=80, bg=PARCHMENT_COLORS['bg_secondary'], 
-                                 highlightthickness=0, relief='flat')
-        title_canvas.pack(fill=tk.X, pady=5)
-        
-        # Apply woodgrain pattern
-        create_woodgrain_pattern(title_canvas, 800, 80)
-
-        # Create outlined title text
-        title_canvas.create_text(400, 35, text="🐚🪲 artiFACTS 🦂🦴", 
-                                font=('Georgia', 36, 'bold'), fill=PARCHMENT_COLORS['title_outline'])
-        title_canvas.create_text(400, 35, text="🐚🪲 artiFACTS 🦂🦴", 
-                                font=('Georgia', 36, 'bold'), fill=PARCHMENT_COLORS['title_gold'])
-
-        subtitle_label = tk.Label(title_container, 
-                                 text="Your curiosities library!",
-                                 font=('Georgia', 14, 'italic'),
-                                 bg=PARCHMENT_COLORS['bg_secondary'],
-                                 fg=PARCHMENT_COLORS['title_rust'])
-        subtitle_label.pack(pady=(0, 10))
+        subtitle_label = ParchmentLabel(title_frame, text="Your curiosities library!",
+                                        font=('Georgia', 16, 'italic'))
+        subtitle_label.pack(pady=(0, 20))
 
         # Bind mouse wheel scrolling
         self.main_canvas.bind('<MouseWheel>', self.on_mousewheel)
