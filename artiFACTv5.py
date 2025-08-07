@@ -203,10 +203,17 @@ class LibraryWindow(tk.Toplevel):
         self.title("📚 Artifact Catalog")
         self.configure(bg=PARCHMENT_COLORS['bg_primary'])
 
-        # Set to fullscreen
-        self.state('zoomed')  # For Windows
-        self.attributes('-zoomed', True)  # For Linux
-        self.attributes('-fullscreen', True)  # Fallback
+        # Set to fullscreen - cross-platform compatible
+        try:
+            # Try Windows zoomed state first
+            self.state('zoomed')
+        except tk.TclError:
+            try:
+                # Try Linux zoomed attribute
+                self.attributes('-zoomed', True)
+            except tk.TclError:
+                # Fallback to fullscreen
+                self.attributes('-fullscreen', True)
 
         # Add academic title
         title_label = ParchmentLabel(self, text="📚 Artifact Catalog & Research Database",
@@ -339,10 +346,17 @@ class ClassifierApp:
         self.master.title("📚 Artifact Research & Classification System")
         self.master.configure(bg=PARCHMENT_COLORS['bg_primary'])
 
-        # Set window to fullscreen
-        self.master.state('zoomed')  # For Windows
-        self.master.attributes('-zoomed', True)  # For Linux
-        self.master.attributes('-fullscreen', True)  # Fallback
+        # Set window to fullscreen - cross-platform compatible
+        try:
+            # Try Windows zoomed state first
+            self.master.state('zoomed')
+        except tk.TclError:
+            try:
+                # Try Linux zoomed attribute
+                self.master.attributes('-zoomed', True)
+            except tk.TclError:
+                # Fallback to fullscreen
+                self.master.attributes('-fullscreen', True)
 
         # Create a canvas for the main window with scrollbars
         self.main_canvas = ParchmentCanvas(self.master)
