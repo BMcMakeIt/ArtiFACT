@@ -13,13 +13,13 @@ from PIL import Image
 
         # Parchment-toned academic explorer color palette with woodgrain
         PARCHMENT_COLORS = {
-            'bg_primary': '#D2B48C',      # Tan woodgrain background
-            'bg_secondary': '#CD853F',    # Saddle brown for sections
+            'bg_primary': '#F5F1E8',      # Cream parchment background
+            'bg_secondary': '#E8E0D0',    # Lighter cream for sections
             'accent_gold': '#D4AF37',     # Faint gold for highlights
             'accent_rust': '#B7410E',     # Rust for important elements
             'text_charcoal': '#2F2F2F',   # Charcoal for text
             'text_olive': '#556B2F',      # Olive green for labels
-            'button_bg': '#8B4513',       # Saddle brown for buttons
+            'button_bg': '#8B7355',       # Warm brown for buttons
             'button_hover': '#A0522D',    # Rust on hover
             'success_green': '#556B2F',   # Olive green for success
             'error_red': '#8B0000',       # Dark red for errors
@@ -28,7 +28,8 @@ from PIL import Image
             'text_light': '#4A4A4A',      # Light charcoal for secondary text
             'accent_olive': '#6B8E23',    # Brighter olive for accents
             'title_gold': '#FFD700',      # Bright gold for title
-            'title_rust': '#B7410E'       # Rust for title accent
+            'title_rust': '#B7410E',      # Rust for title accent
+            'title_outline': '#8B4513'    # Dark brown for title outline
         }
 
 # Paths
@@ -36,6 +37,21 @@ MODEL_PATH = "item_classifier_model"
 DB_PATH = "collection_catalog.db"
 CLASS_NAMES_PATH = "class_names.json"
 PHOTO_DIR = "photos"
+
+
+def create_woodgrain_pattern(canvas, width, height):
+    """Create a woodgrain pattern on the given canvas"""
+    # Create woodgrain effect with multiple shades
+    colors = ['#D2B48C', '#CD853F', '#DEB887', '#F4A460', '#DAA520']
+    
+    # Draw horizontal woodgrain lines
+    for y in range(0, height, 3):
+        color = colors[y % len(colors)]
+        canvas.create_line(0, y, width, y, fill=color, width=1)
+    
+    # Add some vertical grain lines for texture
+    for x in range(0, width, 20):
+        canvas.create_line(x, 0, x, height, fill='#8B4513', width=1, dash=(2, 8))
 
 # Load model and class names
 model = load_model(MODEL_PATH)
@@ -217,18 +233,23 @@ class LibraryWindow(tk.Toplevel):
                 # Fallback to fullscreen
                 self.attributes('-fullscreen', True)
 
-        # Add academic title with styling
+        # Add academic title with woodgrain styling
         title_container = tk.Frame(self, bg=PARCHMENT_COLORS['bg_secondary'])
         title_container.pack(fill=tk.X, padx=15, pady=10)
 
-        title_label = tk.Label(title_container, 
-                              text="🐚🪲 artiFACTS 🦂🦴",
-                              font=('Georgia', 28, 'bold'),
-                              bg=PARCHMENT_COLORS['bg_secondary'],
-                              fg=PARCHMENT_COLORS['title_gold'],
-                              relief='raised',
-                              bd=2)
-        title_label.pack(pady=8)
+        # Create canvas for woodgrain background
+        title_canvas = tk.Canvas(title_container, height=60, bg=PARCHMENT_COLORS['bg_secondary'], 
+                                 highlightthickness=0, relief='flat')
+        title_canvas.pack(fill=tk.X, pady=5)
+        
+        # Apply woodgrain pattern
+        create_woodgrain_pattern(title_canvas, 800, 60)
+
+        # Create outlined title text
+        title_canvas.create_text(400, 25, text="🐚🪲 artiFACTS 🦂🦴", 
+                                font=('Georgia', 28, 'bold'), fill=PARCHMENT_COLORS['title_outline'])
+        title_canvas.create_text(400, 25, text="🐚🪲 artiFACTS 🦂🦴", 
+                                font=('Georgia', 28, 'bold'), fill=PARCHMENT_COLORS['title_gold'])
 
         main_frame = ParchmentFrame(self)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=10)
@@ -397,18 +418,23 @@ class ClassifierApp:
         title_frame = ParchmentFrame(main_frame)
         title_frame.pack(fill=tk.X, padx=20, pady=15)
 
-        # Create a custom styled title with gradient effect
+        # Create a custom styled title with outline effect
         title_container = tk.Frame(title_frame, bg=PARCHMENT_COLORS['bg_secondary'])
         title_container.pack(fill=tk.X, padx=10, pady=10)
 
-        title_label = tk.Label(title_container, 
-                              text="🐚🪲 artiFACTS 🦂🦴",
-                              font=('Georgia', 36, 'bold'),
-                              bg=PARCHMENT_COLORS['bg_secondary'],
-                              fg=PARCHMENT_COLORS['title_gold'],
-                              relief='raised',
-                              bd=3)
-        title_label.pack(pady=10)
+        # Create canvas for woodgrain background
+        title_canvas = tk.Canvas(title_container, height=80, bg=PARCHMENT_COLORS['bg_secondary'], 
+                                 highlightthickness=0, relief='flat')
+        title_canvas.pack(fill=tk.X, pady=5)
+        
+        # Apply woodgrain pattern
+        create_woodgrain_pattern(title_canvas, 800, 80)
+
+        # Create outlined title text
+        title_canvas.create_text(400, 35, text="🐚🪲 artiFACTS 🦂🦴", 
+                                font=('Georgia', 36, 'bold'), fill=PARCHMENT_COLORS['title_outline'])
+        title_canvas.create_text(400, 35, text="🐚🪲 artiFACTS 🦂🦴", 
+                                font=('Georgia', 36, 'bold'), fill=PARCHMENT_COLORS['title_gold'])
 
         subtitle_label = tk.Label(title_container, 
                                  text="Your curiosities library!",
@@ -483,18 +509,18 @@ class ClassifierApp:
                                           font=('Georgia', 12))
         self.image_label.pack(pady=10)
 
-        # Results section (stays in place) - reduced height
+        # Results section (stays in place) - adjusted height
         results_frame = ParchmentFrame(main_frame)
-        results_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=10)
+        results_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
 
         results_label = ParchmentLabel(
             results_frame, text="🔍 CLASSIFICATION RESULTS",
              font=('Georgia', 14, 'bold'))
-        results_label.pack(pady=(8, 5))
+        results_label.pack(pady=(10, 5))
 
         self.result_text = ParchmentText(
-            results_frame, height=12, width=90, state='disabled', wrap='word')
-        self.result_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+            results_frame, height=14, width=90, state='disabled', wrap='word')
+        self.result_text.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
 
         # Bind main frame resize to update scroll region
         main_frame.bind('<Configure>',
