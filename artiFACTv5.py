@@ -11,23 +11,25 @@ from tensorflow.keras.preprocessing import image
 from keras.preprocessing.image import ImageDataGenerator
 from PIL import Image
 
-# Parchment-toned academic explorer color palette
-PARCHMENT_COLORS = {
-    'bg_primary': '#F5F1E8',      # Cream parchment background
-    'bg_secondary': '#E8E0D0',    # Lighter cream for sections
-    'accent_gold': '#D4AF37',     # Faint gold for highlights
-    'accent_rust': '#B7410E',     # Rust for important elements
-    'text_charcoal': '#2F2F2F',   # Charcoal for text
-    'text_olive': '#556B2F',      # Olive green for labels
-    'button_bg': '#8B7355',       # Warm brown for buttons
-    'button_hover': '#A0522D',    # Rust on hover
-    'success_green': '#556B2F',   # Olive green for success
-    'error_red': '#8B0000',       # Dark red for errors
-    'selection_gold': '#D4AF37',  # Gold for selections
-    'border_charcoal': '#2F2F2F', # Charcoal borders
-    'text_light': '#4A4A4A',      # Light charcoal for secondary text
-    'accent_olive': '#6B8E23'     # Brighter olive for accents
-}
+        # Parchment-toned academic explorer color palette with woodgrain
+        PARCHMENT_COLORS = {
+            'bg_primary': '#D2B48C',      # Tan woodgrain background
+            'bg_secondary': '#CD853F',    # Saddle brown for sections
+            'accent_gold': '#D4AF37',     # Faint gold for highlights
+            'accent_rust': '#B7410E',     # Rust for important elements
+            'text_charcoal': '#2F2F2F',   # Charcoal for text
+            'text_olive': '#556B2F',      # Olive green for labels
+            'button_bg': '#8B4513',       # Saddle brown for buttons
+            'button_hover': '#A0522D',    # Rust on hover
+            'success_green': '#556B2F',   # Olive green for success
+            'error_red': '#8B0000',       # Dark red for errors
+            'selection_gold': '#D4AF37',  # Gold for selections
+            'border_charcoal': '#2F2F2F', # Charcoal borders
+            'text_light': '#4A4A4A',      # Light charcoal for secondary text
+            'accent_olive': '#6B8E23',    # Brighter olive for accents
+            'title_gold': '#FFD700',      # Bright gold for title
+            'title_rust': '#B7410E'       # Rust for title accent
+        }
 
 # Paths
 MODEL_PATH = "item_classifier_model"
@@ -215,13 +217,21 @@ class LibraryWindow(tk.Toplevel):
                 # Fallback to fullscreen
                 self.attributes('-fullscreen', True)
 
-        # Add academic title
-        title_label = ParchmentLabel(self, text="🐚🪲 artiFACTS 🦂🦴",
-                                     font=('Georgia', 24, 'bold'))
-        title_label.pack(pady=20)
+        # Add academic title with styling
+        title_container = tk.Frame(self, bg=PARCHMENT_COLORS['bg_secondary'])
+        title_container.pack(fill=tk.X, padx=15, pady=10)
+
+        title_label = tk.Label(title_container, 
+                              text="🐚🪲 artiFACTS 🦂🦴",
+                              font=('Georgia', 28, 'bold'),
+                              bg=PARCHMENT_COLORS['bg_secondary'],
+                              fg=PARCHMENT_COLORS['title_gold'],
+                              relief='raised',
+                              bd=2)
+        title_label.pack(pady=8)
 
         main_frame = ParchmentFrame(self)
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=10)
 
         self.left_frame = ParchmentFrame(main_frame)
         self.left_frame.pack(side=tk.LEFT, fill=tk.Y, padx=10, pady=10)
@@ -385,15 +395,27 @@ class ClassifierApp:
 
         # Main title with academic styling
         title_frame = ParchmentFrame(main_frame)
-        title_frame.pack(fill=tk.X, padx=30, pady=30)
+        title_frame.pack(fill=tk.X, padx=20, pady=15)
 
-        title_label = ParchmentLabel(title_frame, text="🐚🪲 artiFACTS 🦂🦴",
-                                     font=('Georgia', 28, 'bold'))
-        title_label.pack(pady=20)
+        # Create a custom styled title with gradient effect
+        title_container = tk.Frame(title_frame, bg=PARCHMENT_COLORS['bg_secondary'])
+        title_container.pack(fill=tk.X, padx=10, pady=10)
 
-        subtitle_label = ParchmentLabel(title_frame, text="Your curiosities library!",
-                                        font=('Georgia', 16, 'italic'))
-        subtitle_label.pack(pady=(0, 20))
+        title_label = tk.Label(title_container, 
+                              text="🐚🪲 artiFACTS 🦂🦴",
+                              font=('Georgia', 36, 'bold'),
+                              bg=PARCHMENT_COLORS['bg_secondary'],
+                              fg=PARCHMENT_COLORS['title_gold'],
+                              relief='raised',
+                              bd=3)
+        title_label.pack(pady=10)
+
+        subtitle_label = tk.Label(title_container, 
+                                 text="Your curiosities library!",
+                                 font=('Georgia', 14, 'italic'),
+                                 bg=PARCHMENT_COLORS['bg_secondary'],
+                                 fg=PARCHMENT_COLORS['title_rust'])
+        subtitle_label.pack(pady=(0, 10))
 
         # Bind mouse wheel scrolling
         self.main_canvas.bind('<MouseWheel>', self.on_mousewheel)
@@ -402,40 +424,40 @@ class ClassifierApp:
 
         # Button section with academic styling (moved to second position)
         btn_frame = ParchmentFrame(main_frame)
-        btn_frame.pack(fill=tk.X, padx=20, pady=20)
+        btn_frame.pack(fill=tk.X, padx=15, pady=10)
 
         btn_label = ParchmentLabel(btn_frame, text="🎛️ Research Controls",
                                    font=('Georgia', 14, 'bold'))
-        btn_label.pack(pady=(10, 15))
+        btn_label.pack(pady=(8, 10))
 
         button_container = tk.Frame(btn_frame, bg=PARCHMENT_COLORS['bg_secondary'])
-        button_container.pack(pady=(0, 15))
+        button_container.pack(pady=(0, 10))
 
         self.select_button = ParchmentButton(
             button_container, text="📁 Select Image", command=self.select_image)
-        self.select_button.grid(row=0, column=0, padx=15, pady=15)
+        self.select_button.grid(row=0, column=0, padx=12, pady=10)
 
         self.capture_button = ParchmentButton(
             button_container, text="📷 Capture Image", command=self.capture_image)
-        self.capture_button.grid(row=0, column=1, padx=15, pady=15)
+        self.capture_button.grid(row=0, column=1, padx=12, pady=10)
 
         self.library_button = ParchmentButton(
             button_container, text="📚 View Library", command=self.view_library)
-        self.library_button.grid(row=0, column=2, padx=15, pady=15)
+        self.library_button.grid(row=0, column=2, padx=12, pady=10)
 
-        # Options section (moved to third position)
+        # Options section (moved to third position) - reduced padding
         options_frame = ParchmentFrame(main_frame)
-        options_frame.pack(fill=tk.X, padx=20, pady=20)
+        options_frame.pack(fill=tk.X, padx=15, pady=10)
 
         options_label = ParchmentLabel(options_frame, text="⚙️ OPTIONS",
                                        font=('Georgia', 14, 'bold'))
-        options_label.pack(pady=(10, 5))
+        options_label.pack(pady=(8, 5))
 
         self.top3_var = tk.BooleanVar()
         # Create a custom parchment checkbox
         checkbox_frame = tk.Frame(
             options_frame, bg=PARCHMENT_COLORS['bg_secondary'])
-        checkbox_frame.pack(pady=15)
+        checkbox_frame.pack(pady=8)
 
         self.top3_check = tk.Checkbutton(
             checkbox_frame, text="Show Top 3 Predictions", variable=self.top3_var,
@@ -447,32 +469,32 @@ class ClassifierApp:
             relief='raised',
             bd=2
         )
-        self.top3_check.pack(pady=15)
+        self.top3_check.pack(pady=8)
 
         # Image display section (moved to fourth position)
         image_frame = ParchmentFrame(main_frame)
-        image_frame.pack(fill=tk.X, padx=20, pady=20)
+        image_frame.pack(fill=tk.X, padx=15, pady=10)
 
         image_label = ParchmentLabel(image_frame, text="🖼️ SELECTED IMAGE",
                                      font=('Georgia', 14, 'bold'))
-        image_label.pack(pady=(10, 5))
+        image_label.pack(pady=(8, 5))
 
         self.image_label = ParchmentLabel(image_frame, text="No image selected",
                                           font=('Georgia', 12))
-        self.image_label.pack(pady=15)
+        self.image_label.pack(pady=10)
 
-        # Results section (stays in place)
+        # Results section (stays in place) - reduced height
         results_frame = ParchmentFrame(main_frame)
-        results_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        results_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=10)
 
         results_label = ParchmentLabel(
             results_frame, text="🔍 CLASSIFICATION RESULTS",
              font=('Georgia', 14, 'bold'))
-        results_label.pack(pady=(10, 5))
+        results_label.pack(pady=(8, 5))
 
         self.result_text = ParchmentText(
-            results_frame, height=15, width=90, state='disabled', wrap='word')
-        self.result_text.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
+            results_frame, height=12, width=90, state='disabled', wrap='word')
+        self.result_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         # Bind main frame resize to update scroll region
         main_frame.bind('<Configure>',
